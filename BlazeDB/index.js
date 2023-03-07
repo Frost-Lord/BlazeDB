@@ -8,36 +8,30 @@ const port = 3000;
 app.use(bodyParser.json());
 
 const validateData = (data, schema) => {
-    if (schema.type === 'array') {
-        if (!Array.isArray(data)) {
-            return { valid: false, message: 'Data is not an array' };
-        }
-        const missingItems = data.findIndex((item) => {
-            const missingFields = schema.items.required.filter((field) => !item.hasOwnProperty(field));
-            return missingFields.length > 0;
-        });
-        if (missingItems >= 0) {
-            return { valid: false, message: `Missing required fields for item ${missingItems}: ${schema.items.required.join(', ')}` };
-        }
-        return { valid: true };
-    } else {
-        const missingFields = schema.required.filter((field) => !data.hasOwnProperty(field));
-        if (missingFields.length > 0) {
-            return { valid: false, message: `Missing required fields: ${missingFields.join(', ')}` };
-        }
+    const errors = [];
 
-        for (const [field, type] of Object.entries(schema.properties)) {
-            if (data.hasOwnProperty(field)) {
-                const value = data[field];
-                if (typeof value !== type) {
-                    return { valid: false, message: `Invalid type for field ${field}. Expected ${type}, got ${typeof value}` };
-                }
+    for (const [key, value] of Object.entries(schema)) {
+        const { type, default: defaultValue } = value;
+
+        if (!data.hasOwnProperty(key) || data[key] === undefined || data[key] === null) {
+            if (defaultValue === null) {
+                errors.push(`Missing required field: ${key}`);
+            } else {
+                data[key] = defaultValue;
             }
+        } else if (type && typeof data[key] !== type.name.toLowerCase()) {
+            errors.push(`Invalid type for field ${key}: expected ${type.name}, got ${typeof data[key]}`);
         }
+    }
 
-        return { valid: true };
+    if (errors.length) {
+        return errors.join('; ');
+    } else {
+        return null;
     }
 };
+
+
 
 
 app.post('/api/:token/:dbname', (req, res) => {
@@ -49,8 +43,9 @@ app.post('/api/:token/:dbname', (req, res) => {
         fs.writeFile(`${dbname}.json`, JSON.stringify({ data: {}, schema }), (err) => {
             if (err) {
                 console.error(err);
-                res.status(500).send('Internal Server Error');
-                return;
+                return res.status(200).send({ 
+                 error: 'Error creating database' 
+                });
             }
             console.log('Data saved to file.');
             res.send('Data saved successfully');
@@ -58,15 +53,12 @@ app.post('/api/:token/:dbname', (req, res) => {
         return;
     }
 
+    const validation = validateData(data[0], schema);
 
-    const validation = Array.isArray(data)
-        ? data.map((item) => validateData(item, schema))
-        : validateData(data, schema);
-
-    const hasErrors = validation.some((result) => !result.valid);
-    if (hasErrors) {
-        res.status(400).send(validation);
-        return;
+    if (validation) {
+        console.error(`Data validation failed: ${validation}`);
+    } else {
+        console.log(`Data validation successful: ${JSON.stringify(data)}`);
     }
 
     try {
@@ -82,6 +74,62 @@ app.post('/api/:token/:dbname', (req, res) => {
     console.log('Data saved to file.');
     res.send('Data saved successfully');
 });
+
+
+app.post('/api/:token/:dbname/findone', (req, res) => {
+    console.log(req.body);
+  const { token, dbname } = req.params;
+  const { Key, Value } = req.body;
+  
+  const dir = `./Storage/${token}/${dbname}`;
+  const filename = `${dir}/${dbname}.json`;
+  
+  fs.readFile(filename, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(200).send({ 
+        error: 'Error connecting to the database' 
+       });
+    }
+    
+    const documents = JSON.parse(data);
+    const foundDocument = documents.find((doc) => doc[Key] === Value);
+    
+    if (foundDocument) {
+      return res.send(foundDocument);
+    } else {
+        return res.status(200).send({ 
+            error: 'Document not found' 
+        });
+    }
+  });
+});
+
+app.post('/api/:token/:dbname/update', (req, res) => {
+    const { token, dbname } = req.params;
+    const dir = `./Storage/${token}/${dbname}`;
+    const filename = `${dir}/${dbname}.json`;
+  
+    if (!fs.existsSync(filename)) {
+      return res.status(404).send({ error: 'Database not found' });
+    }
+  
+    const { Key, Value, data } = req.body;
+    const db = JSON.parse(fs.readFileSync(filename));
+    const matches = db.filter((item) => item[Key] === Value);
+  
+    matches.forEach((item) => {
+      Object.entries(data).forEach(([key, value]) => {
+        item[key] = value;
+      });
+    });
+  
+
+    fs.writeFileSync(filename, JSON.stringify(db));
+  
+    res.send(matches);
+  });
+  
 
 app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
