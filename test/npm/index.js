@@ -27,9 +27,9 @@ class BlazeDB {
             if (response.data.error) {
                 console.error(response.data.error);
                 return null;
+            } else {
+                return new BlazeDBData(response.data, Key, Value, this);
             }
-            
-            return new BlazeDBData(response.data, Key, Value, this);
         } catch (error) {
             console.error(error);
             return null;

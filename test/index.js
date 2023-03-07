@@ -49,7 +49,7 @@ async function update() {
 
 async function FindOne() {
     const returndata = await db.findOne('id', '1');
-    console.log("Data found successfully!", returndata);
+    console.log(returndata);
 }
 
 
