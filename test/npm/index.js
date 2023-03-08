@@ -34,8 +34,14 @@ class BlazeDB {
                 return null;
             } else {
                 const dbData = new BlazeDB(this.token, this.dbname, response.data, Key, Value);
-                dbData.changes = {};
-                return dbData;
+                const Dbdata = { ...dbData};
+                delete Dbdata.changes;
+                delete Dbdata.Key;
+                delete Dbdata.Value;
+                delete Dbdata.token;
+                delete Dbdata.dbname;
+                delete Dbdata.url;
+                return Dbdata;
             }
         } catch (error) {
             logger.error('BlazeDB', error);
@@ -66,7 +72,6 @@ class BlazeDB {
             this.changes[property] = value;
             this[property] = value;
         }
-        this.save();
     }
 
     async save() {
