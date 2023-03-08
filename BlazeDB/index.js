@@ -77,7 +77,6 @@ app.post('/api/:token/:dbname', (req, res) => {
 
 
 app.post('/api/:token/:dbname/findone', (req, res) => {
-    console.log(req.body);
   const { token, dbname } = req.params;
   const { Key, Value } = req.body;
   

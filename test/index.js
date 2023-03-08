@@ -13,6 +13,12 @@ const data = [
         age: 30,
         PastNames: ['John', 'Johnny', 'Johnathan'],
     },
+    {
+        id: '2',
+        name: 'Mike',
+        age: 20,
+        PastNames: ['Mich', 'Mickel', 'jake'],
+    },
 ]
 
 ////////////////////////////////////////////////////////////////
@@ -35,8 +41,8 @@ async function create() {
 
 async function update() {
     const dbData = await db.findOne({ Key: 'id', Value: '1' });
-    dbData.set("name", "bob");
-    dbData.set("age", 32);
+    dbData.set("name", "Jake");
+    dbData.set("age", 19);
 }
 
 
@@ -50,5 +56,5 @@ async function FindOne() {
 // Test the functions above
 ////////////////////////////////////////////////////////////////
 //create();
-update();
+//update();
 FindOne();
