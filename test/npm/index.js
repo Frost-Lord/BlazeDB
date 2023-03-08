@@ -1,22 +1,27 @@
 const axios = require('axios');
+const logger = require('./logger.js');
 
 class BlazeDB {
-    constructor(token, dbname) {
+    constructor(token, dbname, data = {}, Key = '', Value = '') {
         this.token = token;
         this.dbname = dbname;
         this.url = `http://localhost:3000/api/${token}/${dbname}`;
+        this.changes = {};
+        Object.assign(this, data);
+        this.Key = Key;
+        this.Value = Value;
     }
 
     async create(data, schema) {
         try {
             const response = await axios.post(`${this.url}`, { data, schema });
             if (response.data.error) {
-                console.error(response.data.error);
+                logger.error('BlazeDB', response.data.error);
                 return false;
             }
             return true;
         } catch (error) {
-            console.error(error.message);
+            logger.error('BlazeDB', error);
             return false;
         }
     }
@@ -25,53 +30,35 @@ class BlazeDB {
         try {
             const response = await axios.post(`${this.url}/findone`, { Key, Value });
             if (response.data.error) {
-                console.error(response.data.error);
+                logger.error('BlazeDB', response.data.error);
                 return null;
             } else {
-                return new BlazeDBData(response.data, Key, Value, this);
+                const dbData = new BlazeDB(this.token, this.dbname, response.data, Key, Value);
+                dbData.changes = {};
+                return dbData;
             }
         } catch (error) {
-            console.error(error);
+            logger.error('BlazeDB', error);
             return null;
         }
     }
 
-    async update(Key, Value, data) {
+    async update(changes) {
         try {
-            const response = await axios.post(`${this.url}/update`, { Key, Value, data });
+            console.log("Update:", changes);
+            const response = await axios.post(`${this.url}/update`, { Key: this.Key, Value: this.Value, changes });
             if (response.data.error) {
-                console.error(response.data.error);
+                logger.error('BlazeDB', response.data.error);
                 return false;
-            }
-            return true;
-        } catch (error) {
-            console.error(error.message);
-            return false;
-        }
-    }
-}
-
-class BlazeDBData {
-    constructor(data, Key, Value, db) {
-        this.Key = Key;
-        this.Value = Value;
-        this.db = db;
-        this.changes = {};
-        Object.assign(this, data);
-    }
-
-    save() {
-        const changes = this.changes;
-        return this.db.update(this.Key, this.Value, changes).then((success) => {
-            if (success) {
+            } else {
                 Object.assign(this, changes);
                 this.changes = {};
                 return true;
-            } else {
-                console.log("Failed to update data!");
-                return null;
             }
-        });
+        } catch (error) {
+            logger.error('BlazeDB', error);
+            return false;
+        }
     }
 
     set(property, value) {
@@ -79,8 +66,13 @@ class BlazeDBData {
             this.changes[property] = value;
             this[property] = value;
         }
+        this.save();
+    }
+
+    async save() {
+        const changes = this.changes;
+        return await this.update(changes);
     }
 }
-
 
 module.exports = BlazeDB;

@@ -1,5 +1,5 @@
 const axios = require('axios');
-const BlazeDB = require("./npm");
+const BlazeDB = require('./npm')
 
 const db = new BlazeDB('435k2h7637c63hg76', 'testdb');
 
@@ -23,29 +23,23 @@ const schema = {
     name: { type: String, default: null },
     age: { type: Number, default: null },
     PastNames: { type: Array, default: [] },
-};  
+};
 
 ////////////////////////////////////////////////////////////////
 // Test functions
 ////////////////////////////////////////////////////////////////
 async function create() {
     const returndata = await db.create(data, schema);
-    console.log("Data saved successfully!", returndata);
+    console.log("Data Created Successfully!", returndata);
 }
 
 async function update() {
-    const returndata = await db.findOne('id', '1');
-    
-    if (returndata) {
-      returndata.set("name", "jake");
-      returndata.set("age", 30);
-      const data = await returndata.save();
-    
-    console.log("Data saved successfully!", data);
-    } else {
-    console.log("Data not found!");
-    }
+    const dbData = await db.findOne({ Key: 'id', Value: '1' });
+    dbData.set("name", "bob");
+    dbData.set("age", 17);
+    await db.save();
 }
+
 
 async function FindOne() {
     const returndata = await db.findOne('id', '1');
@@ -56,6 +50,6 @@ async function FindOne() {
 ////////////////////////////////////////////////////////////////
 // Test the functions above
 ////////////////////////////////////////////////////////////////
-create();
+//create();
 update();
-FindOne();
+//FindOne();
