@@ -36,14 +36,13 @@ async function create() {
 async function update() {
     const dbData = await db.findOne({ Key: 'id', Value: '1' });
     dbData.set("name", "bob");
-    dbData.set("age", 17);
-    await db.save();
+    dbData.set("age", 32);
 }
 
 
 async function FindOne() {
     const returndata = await db.findOne('id', '1');
-    console.log(returndata);
+    console.log(returndata.data);
 }
 
 
@@ -52,4 +51,4 @@ async function FindOne() {
 ////////////////////////////////////////////////////////////////
 //create();
 update();
-//FindOne();
+FindOne();

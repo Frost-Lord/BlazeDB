@@ -117,6 +117,8 @@ app.post('/api/:token/:dbname/update', (req, res) => {
     const { Key, Value, data } = req.body;
     const db = JSON.parse(fs.readFileSync(filename));
     const matches = db.filter((item) => item[Key] === Value);
+
+    console.log("Key: " + Key, "Value: " + Value, "Matches: " + matches);
   
     matches.forEach((item) => {
       Object.entries(data).forEach(([key, value]) => {

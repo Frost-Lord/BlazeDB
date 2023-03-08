@@ -7,10 +7,16 @@ class BlazeDB {
         this.dbname = dbname;
         this.url = `http://localhost:3000/api/${token}/${dbname}`;
         this.changes = {};
-        Object.assign(this, data);
+        this.data = data;
         this.Key = Key;
         this.Value = Value;
     }
+
+    getData() {
+        const { changes, token, dbname, url, Key, Value, data, ...rest } = this;
+        return { data, ...rest };
+    }
+      
 
     async create(data, schema) {
         try {
@@ -34,30 +40,22 @@ class BlazeDB {
                 return null;
             } else {
                 const dbData = new BlazeDB(this.token, this.dbname, response.data, Key, Value);
-                const Dbdata = { ...dbData};
-                delete Dbdata.changes;
-                delete Dbdata.Key;
-                delete Dbdata.Value;
-                delete Dbdata.token;
-                delete Dbdata.dbname;
-                delete Dbdata.url;
-                return Dbdata;
+                return dbData;
             }
         } catch (error) {
             logger.error('BlazeDB', error);
             return null;
         }
-    }
+    }    
 
     async update(changes) {
         try {
-            console.log("Update:", changes);
-            const response = await axios.post(`${this.url}/update`, { Key: this.Key, Value: this.Value, changes });
+            const response = await axios.post(`${this.url}/update`, { Key: this.Key.Key, Value: this.Key.Value, data: this.changes });
             if (response.data.error) {
                 logger.error('BlazeDB', response.data.error);
                 return false;
             } else {
-                Object.assign(this, changes);
+                Object.assign(this.data, changes);
                 this.changes = {};
                 return true;
             }
@@ -67,17 +65,34 @@ class BlazeDB {
         }
     }
 
-    set(property, value) {
-        if (this[property] !== value) {
+    async set(property, value) {
+        const changes = this.changes;
+        if (this.data[property] !== value) {
             this.changes[property] = value;
-            this[property] = value;
+            this.data[property] = value;
         }
+        const success = await this.update(changes);
+        if (success) {
+            return success;
+        }
+        return null;
     }
 
     async save() {
         const changes = this.changes;
-        return await this.update(changes);
+        const modifiedData = {};
+        for (const prop in changes) {
+            if (changes.hasOwnProperty(prop)) {
+                modifiedData[prop] = this.data[prop];
+            }
+        }
+        const success = await this.update(changes);
+        if (success) {
+            return modifiedData;
+        }
+        return null;
     }
+    
 }
 
 module.exports = BlazeDB;
