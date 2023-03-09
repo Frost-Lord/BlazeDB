@@ -1,0 +1,139 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  height: 100vh;
+}
+
+.nav {
+  background-color: #1c1c1c;
+  color: white;
+  padding: 1rem;
+}
+
+.topbar {
+  flex: 0 0 auto;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: #1c1c1c;
+}
+
+.contentWrapper {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+.bubbleButton {
+  background-color: #2b825b;
+  color: white;
+  padding: 0.7rem;
+  border-radius: 5px;
+  border: none;
+  font-size: 0.9rem;
+}
+
+.card {
+  background-color: #323131;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.cardTitle {
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+.cardBody {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.modal {
+  display: fixed;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  color: #fff;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,.4);
+}
+
+.modalHeader h2 {
+  text-align: center;
+}
+
+.modalFooterLine {
+  border-top: 1px solid #ccc;
+  margin: 10px 0;
+}
+
+.modalContent {
+  width: 60rem;
+  padding: 4rem 2rem;
+  border-radius: 0.8rem;
+  position: relative;
+  overflow: hidden;
+  background-color: #232323;
+  margin: auto;
+  color: #fff;
+  border: 1px solid var(--card-shadow);
+  width: 50%;
+  box-shadow: 0 0 0.5rem #40bf86;
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: .4s;
+  animation-name: animatetop;
+  animation-duration: .4s;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.form {
+  width: 500px;
+  color: white;
+  margin: 0 auto;
+  text-align: left;
+  font-family: roboto,sans-serif;
+  color: #333;
+}
+
+.label {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+  transition: .3s;
+}

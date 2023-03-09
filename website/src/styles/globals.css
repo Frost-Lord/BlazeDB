@@ -87,12 +87,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: linear-gradient( to bottom, #1c1c1c, rgb(var(--background-end-rgb)) ) rgb(var(--background-start-rgb));
 }
 
 a {
@@ -105,3 +100,55 @@ a {
     color-scheme: dark;
   }
 }
+
+
+/* //////////////////////////////// */
+/* Dashboard Sidebar */
+/* //////////////////////////////// */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  background-color: #000000;
+  color: white;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  padding: 20px;
+}
+
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  margin-bottom: 10px;
+}
+
+nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 5px 0;
+  transition: all 0.2s ease;
+}
+
+nav a:hover {
+  color: #2b825b;
+}
+
+nav strong {
+  display: block;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: white;
+}
+
+/* //////////////////////////////// */
+/* END Dashboard Sidebar */
+/* //////////////////////////////// */
