@@ -31,7 +31,8 @@
   display: flex;
   flex: 1;
   align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .bubbleButton {
@@ -48,6 +49,8 @@
   color: white;
   padding: 1rem;
   border-radius: 8px;
+  flex-basis: calc(50% - 1rem);
+  margin-bottom: 2rem;
 }
 
 .cardTitle {
