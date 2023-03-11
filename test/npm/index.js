@@ -5,7 +5,7 @@ class BlazeDB {
     constructor(token, dbname, data = {}, Key = '', Value = '') {
         this.token = token;
         this.dbname = dbname;
-        this.url = `http://localhost:3000/api/${token}/${dbname}`;
+        this.url = `http://localhost:4000/api/${token}/${dbname}`;
         this.changes = {};
         this.data = data;
         this.Key = Key;

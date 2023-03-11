@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from "next/head";
 import styles from "@/styles/Dashboard.module.css";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 
 export default function Dashboard() {
@@ -17,7 +17,7 @@ export default function Dashboard() {
           {
             "name": "test",
             "type": "personal",
-            "token": "14kw67by436v7jf3c32"
+            "token": "435k2h7637c63hg76"
           },
           {
             "name": "test2",

@@ -140,3 +140,87 @@
   outline: none;
   transition: .3s;
 }
+
+
+.cardSchema {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  margin-bottom: 20px;
+  overflow: hidden;
+  color: #0000;
+}
+
+.cardHeaderSchema h2 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+  padding: 10px;
+  color: #000000;
+}
+
+.card-headerSchema {
+  background-color: #eee;
+  padding: 10px;
+  font-weight: bold;
+}
+
+.card-bodySchema {
+  padding: 10px;
+}
+
+.card-bodySchema > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.card-bodySchema > div > div:first-child {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  color: #fff;
+}
+
+.table th,
+.table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #000000;
+  font-weight: bold;
+}
+
+.table tr:nth-child(even) {
+  background-color: #242424;
+}
+
+.table tr:nth-child(odd) {
+  background-color: #1c1c1c;
+}
+
+.table tr:hover {
+  background-color: #524f4f;
+}
+
+.table .checkbox {
+  text-align: center;
+}
+
+.table .checkbox input[type="checkbox"] {
+  margin: 0 auto;
+}
+
+.table .checkbox input[type="checkbox"]:checked {
+  background-color: #2196F3;
+}
+

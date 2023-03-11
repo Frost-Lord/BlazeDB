@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 app.use(bodyParser.json());
 
@@ -75,6 +75,31 @@ app.post('/api/:token/:dbname', (req, res) => {
     res.send('Data saved successfully');
 });
 
+app.post('/api/:token/:dbname/getschema', (req, res) => {
+    const { token, dbname } = req.params;
+
+    const dir = `./Storage/${token}/${dbname}`;
+    const filename = `${dir}/${dbname}.json`;
+
+    fs.readFile(filename, (err, data) => {
+        if (err) {
+          console.error(err);
+          return res.status(200).send({ 
+            error: 'Error connecting to the database' 
+           });
+        }
+
+        const documents = JSON.parse(data);
+
+        if (documents) {
+            return res.send(documents);
+        } else {
+            return res.status(200).send({
+                error: 'Document not found'
+            });
+        }
+    });
+});
 
 app.post('/api/:token/:dbname/findone', (req, res) => {
   const { token, dbname } = req.params;

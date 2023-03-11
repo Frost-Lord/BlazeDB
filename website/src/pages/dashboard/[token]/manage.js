@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import Head from "next/head";
 import Sidebar from "../../components/Sidebar";
 import styles from '@/styles/Dashboard.module.css';
@@ -8,6 +9,91 @@ import axios from 'axios';
 const Manage = () => {
   const router = useRouter();
   const { token } = router.query;
+
+  const [RootData, setRootData] = useState(null);
+  const [schemaData, setSchemaData] = useState(null);
+
+
+
+  useEffect(() => {
+    async function fetchData() {
+      if (token) {
+        try {
+          const data = [
+            {
+              "id": "1",
+              "name": "Jake",
+              "age": 19,
+              "PastNames": [
+                "John",
+                "Johnny",
+                "Johnathan"
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Mike",
+              "age": 20,
+              "PastNames": [
+                "Mich",
+                "Mickel",
+                "jake"
+              ]
+            }
+          ]
+
+          const schema = {
+            id: { type: String, default: null },
+            name: { type: String, default: null },
+            age: { type: Number, default: null },
+            PastNames: { type: Array, default: [] },
+          };
+          setSchemaData(schema);
+          setRootData(data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+    fetchData();
+  }, [token]);
+
+  const createHeaders = () => {
+    if (!schemaData) {
+      return null;
+    }
+    const schemaKeys = Object.keys(schemaData);
+    return (
+      <tr>
+        <th>
+          <input type="checkbox" />
+        </th>
+        {schemaKeys.map((key) => (
+          <th key={key}>{key}</th>
+        ))}
+      </tr>
+    );
+  };
+
+  const createRows = () => {
+    if (!schemaData) {
+      return null;
+    }
+    return (
+      <>
+        {RootData.map((item, index) => (
+          <tr key={item.id} className={index % 2 === 0 ? styles.lightRow : styles.darkRow}>
+            <td>
+              <input type="checkbox" />
+            </td>
+            {Object.keys(schemaData).map((key) => (
+              <td key={key}>{item[key]}</td>
+            ))}
+          </tr>
+        ))}
+      </>
+    );
+  };
 
   return (
     <>
@@ -30,17 +116,21 @@ const Manage = () => {
 
           <div className={styles.contentWrapper}>
 
-
-            <div className={styles.card}>
-              <div className={styles.cardTitle}>
-                <h2>Organization Management:</h2>
+            <div className={styles.cardSchema}>
+              <div className={styles.cardHeaderSchema}>
+                <h2>Schema:</h2>
               </div>
-              <div className={styles.cardBody}>
-                <p>Token: {token}</p>
+              <div className={styles.cardBodySchema}>
+                <table className={styles.table}>
+                  <thead>{createHeaders()}</thead>
+                  <tbody>{createRows()}</tbody>
+                </table>
               </div>
             </div>
 
           </div>
+
+
         </main>
       </div>
     </>
