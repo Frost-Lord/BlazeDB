@@ -13,8 +13,6 @@ const Manage = () => {
   const [RootData, setRootData] = useState(null);
   const [schemaData, setSchemaData] = useState(null);
 
-
-
   useEffect(() => {
     async function fetchData() {
       if (token) {
@@ -40,7 +38,7 @@ const Manage = () => {
                 "jake"
               ]
             }
-          ]
+          ];          
 
           const schema = {
             id: { type: String, default: null },
@@ -58,40 +56,35 @@ const Manage = () => {
     fetchData();
   }, [token]);
 
-  const createHeaders = () => {
-    if (!schemaData) {
-      return null;
-    }
-    const schemaKeys = Object.keys(schemaData);
-    return (
-      <tr>
-        <th>
-          <input type="checkbox" />
-        </th>
-        {schemaKeys.map((key) => (
-          <th key={key}>{key}</th>
-        ))}
-      </tr>
-    );
-  };
-
-  const createRows = () => {
-    if (!schemaData) {
-      return null;
-    }
+  const createCard = () => {
     return (
       <>
-        {RootData.map((item, index) => (
-          <tr key={item.id} className={index % 2 === 0 ? styles.lightRow : styles.darkRow}>
-            <td>
-              <input type="checkbox" />
-            </td>
-            {Object.keys(schemaData).map((key) => (
-              <td key={key}>{item[key]}</td>
-            ))}
-          </tr>
-        ))}
-      </>
+      {RootData?.map((item, index) => (
+        <div key={item.id} className={styles.card}>
+          <div className={styles.headerSchema}>
+            <h2>Record {index + 1}:
+              <div className={styles.cardButtons}>
+                <button className={styles.selectButton}>Select</button>
+                <button className={styles.editButton}>Edit</button>
+                <button className={styles.deleteButton}>Delete</button>
+              </div>
+            </h2>
+          </div>
+          <br />
+          <div className={styles.bodySchema}>
+            {Object.keys(schemaData).map((key) => {
+              const value = Array.isArray(item[key]) ? item[key].join(", ") : item[key];
+              return (
+                <div key={key} className={styles.field}>
+                  <strong>{key}: </strong>
+                  <span>{value}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+    </>
     );
   };
 
@@ -113,23 +106,9 @@ const Manage = () => {
             <p>test</p>
           </div>
 
-
           <div className={styles.contentWrapper}>
-
-            <div className={styles.cardSchema}>
-              <div className={styles.cardHeaderSchema}>
-                <h2>Schema:</h2>
-              </div>
-              <div className={styles.cardBodySchema}>
-                <table className={styles.table}>
-                  <thead>{createHeaders()}</thead>
-                  <tbody>{createRows()}</tbody>
-                </table>
-              </div>
-            </div>
-
+            {createCard()}
           </div>
-
 
         </main>
       </div>

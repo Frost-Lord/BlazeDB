@@ -160,14 +160,14 @@
 }
 
 .card-headerSchema {
-  background-color: #eee;
-  padding: 10px;
-  font-weight: bold;
+  background-color: #000000;
+  color: #ffffff;
 }
 
-.card-bodySchema {
-  padding: 10px;
+.cardSchema {
+  background-color: #ffffff;
 }
+
 
 .card-bodySchema > div {
   display: flex;
@@ -182,45 +182,30 @@
   margin-right: 10px;
 }
 
-.table {
-  border-collapse: collapse;
-  width: 100%;
+.cardButtons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+
+.selectButton,
+.editButton,
+.deleteButton {
+  background-color: #000;
   color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
-.table th,
-.table td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
+.selectButton:hover,
+.editButton:hover,
+.deleteButton:hover {
+  background-color: #fff;
+  color: #000;
+  border: 2px solid #000;
 }
-
-.table th {
-  background-color: #000000;
-  font-weight: bold;
-}
-
-.table tr:nth-child(even) {
-  background-color: #242424;
-}
-
-.table tr:nth-child(odd) {
-  background-color: #1c1c1c;
-}
-
-.table tr:hover {
-  background-color: #524f4f;
-}
-
-.table .checkbox {
-  text-align: center;
-}
-
-.table .checkbox input[type="checkbox"] {
-  margin: 0 auto;
-}
-
-.table .checkbox input[type="checkbox"]:checked {
-  background-color: #2196F3;
-}
-
