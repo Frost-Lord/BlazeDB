@@ -39,7 +39,19 @@ const Manage = () => {
               ]
             },
             {
-              "id": "2",
+              "id": "3",
+              "name": "Mike",
+              "age": 20,
+              "PastNames": [
+                "Mich",
+                "Mickel",
+                "jake",
+                "Mickel",
+                "jake"
+              ]
+            },
+            {
+              "id": "4",
               "name": "Mike",
               "age": 20,
               "PastNames": [
@@ -49,7 +61,7 @@ const Manage = () => {
               ]
             },
             {
-              "id": "2",
+              "id": "5",
               "name": "Mike",
               "age": 20,
               "PastNames": [
@@ -59,17 +71,7 @@ const Manage = () => {
               ]
             },
             {
-              "id": "2",
-              "name": "Mike",
-              "age": 20,
-              "PastNames": [
-                "Mich",
-                "Mickel",
-                "jake"
-              ]
-            },
-            {
-              "id": "2",
+              "id": "6",
               "name": "Mike",
               "age": 20,
               "PastNames": [
@@ -104,7 +106,7 @@ const Manage = () => {
           <div key={item.id} className={styles.card}>
             <div className={styles.headerSchema}>
               <h2>Record {index + 1}:
-                <div className={styles.cardButtons}>
+                <div className={styles.cardButtons && styles.right}>
                   <button className={styles.selectButton}>Select</button>
                   <button className={styles.editButton}>Edit</button>
                   <button className={styles.deleteButton}>Delete</button>
@@ -114,7 +116,7 @@ const Manage = () => {
             <br />
             <div className={styles.bodySchema}>
                 <div className="middle">
-                  <div key={item.id} className={styles.card}>
+                  <div key={item.id} className={styles.card && styles.right}>
                     <div className={styles.bodySchema}>
                       {Object.keys(schemaData).map((key) => {
                         const value = Array.isArray(item[key]) ? item[key].join(", ") : item[key];
@@ -128,7 +130,8 @@ const Manage = () => {
                     </div>
                   </div>
                 </div>
-                <div className="right">
+                <br></br>
+                <div className={styles.right}>
                   <pre>{JSON.stringify(schemaData, null, 2)}</pre>
                 </div>
             </div>
@@ -153,10 +156,6 @@ const Manage = () => {
           <Sidebar />
         </nav>
         <main className={styles.main}>
-          <div className={styles.topbar}>
-            <p>test</p>
-          </div>
-
           <div className={styles.contentWrapper}>
             {createCard()}
           </div>

@@ -11,7 +11,7 @@ const Sidebar = () => {
         <header>
           <div className="image-text">
             <span className="image">
-              <img src="logo.png" alt=""></img>
+              <img src="/blazedb.png" alt="logo"></img>
             </span>
 
             <div className="text logo-text">
@@ -34,38 +34,30 @@ const Sidebar = () => {
               <li className="nav-link">
                 <a href="#">
                   <i className="fa fa-desktop"></i>
-                  <span className="text nav-text"> Dashboard</span>
+                  <span className="text nav-text"> Projects</span>
                 </a>
               </li>
 
               <li className="nav-link">
                 <a href="#">
                   <i className="fa fa-solid fa-code-fork"></i>
-                  <span className="text nav-text"> Revenue</span>
+                  <span className="text nav-text"> Organizations</span>
                 </a>
               </li>
 
               <li className="nav-link">
                 <a href="#">
                   <i className="fa fa-solid fa-shield"></i>
-                  <span className="text nav-text"> Notifications</span>
+                  <span className="text nav-text"> Account</span>
                 </a>
               </li>
 
               <li className="nav-link">
                 <a href="#">
                   <i className="fa-solid fa-gear"></i>
-                  <span className="text nav-text"> Analytics</span>
+                  <span className="text nav-text"> Documentation</span>
                 </a>
               </li>
-
-              <li className="nav-link">
-                <a href="#">
-                  <i className="fa fa-regular fa-credit-card"></i>
-                  <span className="text nav-text"> Likes</span>
-                </a>
-              </li>
-
             </ul>
           </div>
 

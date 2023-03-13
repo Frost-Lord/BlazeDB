@@ -32,8 +32,8 @@
   flex: 1;
   align-items: center;
   flex-wrap: wrap;
-  justify-content: space-between;
-  overflow: hidden;
+  justify-content: left;
+  width: 100%;
 }
 
 .bubbleButton {
@@ -45,6 +45,12 @@
   font-size: 0.9rem;
 }
 
+.img {
+  width: 200%;
+  height: 200%;
+  object-fit: cover;
+}
+
 .card {
   background-color: #323131;
   color: white;
@@ -52,6 +58,8 @@
   border-radius: 8px;
   flex-basis: calc(50% - 1rem);
   margin-bottom: 2rem;
+  flex: 0 0 auto;
+  max-width: 100%;
 }
 
 .cardTitle {
@@ -219,4 +227,12 @@
   grid-auto-flow: dense;
   grid-gap: 10px;
   padding: 10px;
+  margin-top: 10%;
+  margin-left: 10%;
+}
+
+.right {
+  background-color: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
 }
