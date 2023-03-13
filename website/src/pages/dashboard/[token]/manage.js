@@ -37,8 +37,48 @@ const Manage = () => {
                 "Mickel",
                 "jake"
               ]
+            },
+            {
+              "id": "2",
+              "name": "Mike",
+              "age": 20,
+              "PastNames": [
+                "Mich",
+                "Mickel",
+                "jake"
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Mike",
+              "age": 20,
+              "PastNames": [
+                "Mich",
+                "Mickel",
+                "jake"
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Mike",
+              "age": 20,
+              "PastNames": [
+                "Mich",
+                "Mickel",
+                "jake"
+              ]
+            },
+            {
+              "id": "2",
+              "name": "Mike",
+              "age": 20,
+              "PastNames": [
+                "Mich",
+                "Mickel",
+                "jake"
+              ]
             }
-          ];          
+          ];
 
           const schema = {
             id: { type: String, default: null },
@@ -59,32 +99,43 @@ const Manage = () => {
   const createCard = () => {
     return (
       <>
-      {RootData?.map((item, index) => (
-        <div key={item.id} className={styles.card}>
-          <div className={styles.headerSchema}>
-            <h2>Record {index + 1}:
-              <div className={styles.cardButtons}>
-                <button className={styles.selectButton}>Select</button>
-                <button className={styles.editButton}>Edit</button>
-                <button className={styles.deleteButton}>Delete</button>
-              </div>
-            </h2>
-          </div>
-          <br />
-          <div className={styles.bodySchema}>
-            {Object.keys(schemaData).map((key) => {
-              const value = Array.isArray(item[key]) ? item[key].join(", ") : item[key];
-              return (
-                <div key={key} className={styles.field}>
-                  <strong>{key}: </strong>
-                  <span>{value}</span>
+       <div className={styles.gridcontainer}>
+        {RootData?.map((item, index) => (
+          <div key={item.id} className={styles.card}>
+            <div className={styles.headerSchema}>
+              <h2>Record {index + 1}:
+                <div className={styles.cardButtons}>
+                  <button className={styles.selectButton}>Select</button>
+                  <button className={styles.editButton}>Edit</button>
+                  <button className={styles.deleteButton}>Delete</button>
                 </div>
-              );
-            })}
+              </h2>
+            </div>
+            <br />
+            <div className={styles.bodySchema}>
+                <div className="middle">
+                  <div key={item.id} className={styles.card}>
+                    <div className={styles.bodySchema}>
+                      {Object.keys(schemaData).map((key) => {
+                        const value = Array.isArray(item[key]) ? item[key].join(", ") : item[key];
+                        return (
+                          <div key={key} className={styles.field}>
+                            <strong>{key}: </strong>
+                            <span>{value}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+                <div className="right">
+                  <pre>{JSON.stringify(schemaData, null, 2)}</pre>
+                </div>
+            </div>
           </div>
+        ))}
         </div>
-      ))}
-    </>
+      </>
     );
   };
 

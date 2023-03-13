@@ -33,6 +33,7 @@
   align-items: center;
   flex-wrap: wrap;
   justify-content: space-between;
+  overflow: hidden;
 }
 
 .bubbleButton {
@@ -143,7 +144,7 @@
 
 
 .cardSchema {
-  background-color: #fff;
+  background-color: #181818;
   border-radius: 5px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   margin-bottom: 20px;
@@ -183,7 +184,7 @@
 }
 
 .cardButtons {
-  position: absolute;
+  position: relative;
   top: 10px;
   right: 10px;
 }
@@ -208,4 +209,14 @@
   background-color: #fff;
   color: #000;
   border: 2px solid #000;
+}
+
+
+.gridcontainer {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-auto-rows: minmax(100px, auto);
+  grid-auto-flow: dense;
+  grid-gap: 10px;
+  padding: 10px;
 }
