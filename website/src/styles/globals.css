@@ -298,26 +298,6 @@ header .image-text .profession {
   display: none;
 }
 
-.sidebar .menu-bar .mode {
-  border-radius: 6px;
-  background-color: var(--primary-color-light);
-  position: relative;
-  transition: var(--tran-05);
-}
-
-.menu-bar .mode .sun-moon {
-  height: 50px;
-  width: 60px;
-}
-
-.mode .sun-moon i {
-  position: absolute;
-}
-
-.mode .sun-moon i.sun {
-  opacity: 0;
-}
-
 .menu-bar .bottom-content .toggle-switch {
   position: absolute;
   right: 0;

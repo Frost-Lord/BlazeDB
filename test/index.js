@@ -1,7 +1,7 @@
 const axios = require('axios');
 const BlazeDB = require('./npm')
 
-const db = new BlazeDB('435k2h7637c63hg76', 'testdb');
+const db = new BlazeDB('435k2h7637c63hg76', 'maindb');
 
 ////////////////////////////////////////////////////////////////
 // Test data structure
@@ -57,4 +57,4 @@ async function FindOne() {
 ////////////////////////////////////////////////////////////////
 //create();
 //update();
-FindOne();
+//FindOne();

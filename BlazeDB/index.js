@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
+const cors = require('cors');
 
 const app = express();
 const port = 4000;
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const validateData = (data, schema) => {
     const errors = [];
@@ -74,6 +76,42 @@ app.post('/api/:token/:dbname', (req, res) => {
     console.log('Data saved to file.');
     res.send('Data saved successfully');
 });
+
+app.post('/api/:token/databases/getdbnames', (req, res) => {
+    const { token } = req.params;
+
+    try {
+    const dir = `./Storage/${token}`;
+    const filenames = fs.readdirSync(dir);
+
+
+    const data = [];
+
+    for (let i = 0; i < filenames.length; i++) {
+        const filename = filenames[i];
+        data.push({
+            name: filename,
+        });
+    }
+
+    console.log(data);
+
+
+    if (filenames) {
+        return res.send(filenames);
+    } else {
+        return res.status(200).send({
+            error: 'Databases not found'
+        });
+    }
+    } catch (e) {
+        console.log(e)
+        return res.status(200).send({
+            error: 'Databases not found'
+        });
+    }
+});
+
 
 app.post('/api/:token/:dbname/getschema', (req, res) => {
     const { token, dbname } = req.params;

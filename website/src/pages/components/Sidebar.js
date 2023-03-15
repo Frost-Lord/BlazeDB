@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import Head from "next/head";
 
 const Sidebar = () => {
@@ -68,18 +67,6 @@ const Sidebar = () => {
                 <span className="text nav-text"> Logout</span>
               </a>
             </li>
-
-            <li className="mode">
-              <div className="sun-moon">
-                <i class="fa-solid fa-moon"></i>
-              </div>
-              <span className="mode-text text">Dark mode</span>
-
-              <div className="toggle-switch">
-                <span className="switch"></span>
-              </div>
-            </li>
-
           </div>
         </div>
 

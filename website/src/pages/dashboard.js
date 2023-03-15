@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Head from "next/head";
 import styles from "@/styles/Dashboard.module.css";
+import ModelStyles from "@/styles/Model.module.css";
 import Sidebar from "./components/Sidebar";
 import axios from 'axios';
 
@@ -9,29 +10,30 @@ export default function Dashboard() {
   const [showModal2, setShowModal2] = useState(false);
   const [OrgData, setOrgData] = useState(null);
 
+  const token = "435k2h7637c63hg76";
+
   useEffect(() => {
     async function fetchData() {
       try {
-        //const res = await axios.post('/api/getuserdata');
-        const res = [
-          {
-            "name": "test",
-            "type": "personal",
-            "token": "435k2h7637c63hg76"
-          },
-          {
-            "name": "test2",
-            "type": "personal",
-            "token": "23l5l1h4363v788c74c"
-          }
-        ]
-        setOrgData(res);
+        const res = await axios.post(`http://localhost:4000/api/${token}/databases/getdbnames`);
+        setOrgData(res.data);
       } catch (error) {
         console.log(error);
       }
     }
-    fetchData();
-  }, []);
+    if (token) {
+      fetchData();
+    }
+
+    localStorage.setItem('token', token);
+  }, [token]);
+
+  let usertoken;
+  if (typeof window !== "undefined") {
+    usertoken = localStorage.getItem('token');
+  }
+
+
 
   const toggleModal = () => {
     setShowModal(!showModal);
@@ -40,8 +42,6 @@ export default function Dashboard() {
   const toggleModal2 = () => {
     setShowModal2(!showModal2);
   };
-
-
 
   async function createOrg() {
     const name = document.getElementById('name')?.value;
@@ -83,24 +83,17 @@ export default function Dashboard() {
           <Sidebar />
         </nav>
         <main className={styles.main}>
-          <div className={styles.topbar}>
-            <p>test</p>
-          </div>
-
-
           <div className={styles.contentWrapper}>
-            {OrgData ? (
-              OrgData.map((org) => (
+            {OrgData && Array.isArray(OrgData) ? (
+              OrgData?.map((data) => (
                 <div className={styles.card}>
                   <div className={styles.cardTitle}>
                     <h2>Organization Data:</h2>
                   </div>
                   <div className={styles.cardBody}>
-                    <p>Name: {org.name}</p>
-                    <p>Type: {org.type}</p>
-                    <p>ID: {org.token}</p>
+                    <p>Name: {data}</p>
                   </div>
-                  <button className={styles.bubbleButton} onClick={() => window.location.href=`/dashboard/${org.token}/manage`}> Access Organization </button>
+                  <button className={styles.bubbleButton} onClick={() => window.location.href = `/dashboard/${usertoken}/${data}/manage`}> Access Organization </button>
                 </div>
               ))
             ) : (
@@ -125,20 +118,20 @@ export default function Dashboard() {
       </div>
 
       {showModal && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <div className={styles.modalHeader}>
+        <div className={ModelStyles.modal}>
+          <div className={ModelStyles.modalContent}>
+            <div className={ModelStyles.modalHeader}>
               <h2>Create a new organization:</h2>
-              <button className={styles.close} onClick={showModal}>
+              <button className={ModelStyles.close} onClick={toggleModal}>
                 &times;
               </button>
             </div>
             <br />
-            <div className={styles.modalBody}>
-              <form className={styles.form}>
-                <label className={styles.label} htmlFor="dorgname">Name:</label>
+            <div className={ModelStyles.modalBody}>
+              <form className={ModelStyles.form}>
+                <label className={ModelStyles.label} htmlFor="dorgname">Name:</label>
                 <input
-                  className={styles.input}
+                  className={ModelStyles.input}
                   type="text"
                   id='name'
                   placeholder='Organization name'
@@ -146,9 +139,9 @@ export default function Dashboard() {
                   maxLength="20"
                 />
                 <br></br>
-                <label className={styles.label} htmlFor="type">Type of organization:</label>
+                <label className={ModelStyles.label} htmlFor="type">Type of organization:</label>
                 <select
-                  className={styles.input}
+                  className={ModelStyles.input}
                   type="text"
                   id='orgtype'
                 >
@@ -160,12 +153,12 @@ export default function Dashboard() {
                   <option value="N/A">N/A</option>
                 </select>
               </form>
-              <div className={styles.modalFooterLine}></div>
-              <div className={styles.modalFooter}>
-                <button className={styles.bubbleButton} onClick={toggleModal}>
+              <div className={ModelStyles.modalFooterLine}></div>
+              <div className={ModelStyles.modalFooter}>
+                <button className={ModelStyles.bubbleButton} onClick={toggleModal}>
                   Cancel
                 </button>
-                <button className={styles.bubbleButton} onClick={toggleModal && toggleModal2}>
+                <button className={ModelStyles.bubbleButton} onClick={toggleModal && toggleModal2}>
                   Create Organization
                 </button>
               </div>
@@ -176,20 +169,20 @@ export default function Dashboard() {
 
 
       {showModal2 && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <div className={styles.modalHeader}>
+        <div className={ModelStyles.modal}>
+          <div className={ModelStyles.modalContent}>
+            <div className={ModelStyles.modalHeader}>
               <h2>Create a new project:</h2>
-              <button className={styles.close} onClick={showModal}>
+              <button className={ModelStyles.close} onClick={toggleModal}>
                 &times;
               </button>
             </div>
             <br />
-            <div className={styles.modalBody}>
-              <form className={styles.form}>
-                <label className={styles.label} htmlFor="dorgname">Project Name:</label>
+            <div className={ModelStyles.modalBody}>
+              <form className={ModelStyles.form}>
+                <label className={ModelStyles.label} htmlFor="dorgname">Project Name:</label>
                 <input
-                  className={styles.input}
+                  className={ModelStyles.input}
                   type="text"
                   id='projectname'
                   placeholder='Project name'
@@ -197,9 +190,9 @@ export default function Dashboard() {
                   maxLength="20"
                 />
                 <br></br>
-                <label className={styles.label} htmlFor="dorgname">Database Password:</label>
+                <label className={ModelStyles.label} htmlFor="dorgname">Database Password:</label>
                 <input
-                  className={styles.input}
+                  className={ModelStyles.input}
                   type="text"
                   id='orgdbpassword'
                   placeholder='Type in a strong password for your database'
@@ -207,18 +200,18 @@ export default function Dashboard() {
                   maxLength="20"
                 />
                 <br></br>
-                <label className={styles.label} htmlFor="type">Region:</label>
+                <label className={ModelStyles.label} htmlFor="type">Region:</label>
                 <select
-                  className={styles.input}
+                  className={ModelStyles.input}
                   type="text"
                   id='orgregion'
                 >
                   <option value="Dallas">US East (Dallas)</option>
                 </select>
                 <br></br>
-                <label className={styles.label} htmlFor="type">Pricing Plan:</label>
+                <label className={ModelStyles.label} htmlFor="type">Pricing Plan:</label>
                 <select
-                  className={styles.input}
+                  className={ModelStyles.input}
                   type="text"
                   id='plan'
                 >
@@ -226,12 +219,12 @@ export default function Dashboard() {
                   <option value="proplan">Pro - $25/month</option>
                 </select>
               </form>
-              <div className={styles.modalFooterLine}></div>
-              <div className={styles.modalFooter}>
-                <button className={styles.bubbleButton} onClick={toggleModal}>
+              <div className={ModelStyles.modalFooterLine}></div>
+              <div className={ModelStyles.modalFooter}>
+                <button className={ModelStyles.bubbleButton} onClick={toggleModal}>
                   Cancel
                 </button>
-                <button className={styles.bubbleButton} onClick={createOrg}>
+                <button className={ModelStyles.bubbleButton} onClick={createOrg}>
                   Create Organization
                 </button>
               </div>
