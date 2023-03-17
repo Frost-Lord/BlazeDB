@@ -1,13 +1,31 @@
 const express = require('express');
+const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
-
 const app = express();
 const port = 4000;
 
 app.use(bodyParser.json());
 app.use(cors());
+
+mongoose
+  .connect("mongodb://127.0.0.1:27017/blazedb", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.log("Unable to connect to MongoDB Database.\nError: " + err);
+  });
+mongoose.connection.on("err", (err) => {
+  console.error(`Mongoose connection error: \n ${err.stack}`);
+});
+mongoose.connection.on("disconnected", () => {
+  console.log("Mongoose connection disconnected");
+});
 
 const validateData = (data, schema) => {
     const errors = [];
@@ -33,6 +51,49 @@ const validateData = (data, schema) => {
     }
 };
 
+const CreateLog = async(token, dbname, action) => {
+    const LogSchema = require('./logs/schema/logs.js');
+    const Logdb = await LogSchema.findOne({ token: token, dbname: dbname });
+
+    if (Logdb) {
+        Logdb.logs.push({
+            action: action,
+            time: Math.floor(Date.now() / 1000)
+        })
+        Logdb.save();
+    } else {
+        const newLog = new LogSchema({
+            token: token,
+            dbname: dbname,
+            logs: [{
+                action: action,
+                time: Math.floor(Date.now() / 1000)
+            }]
+        });
+        newLog.save();
+    }
+};
+
+
+app.post('/api/:token/:dbname/logs', async (req, res) => {
+    const { token, dbname } = req.params;
+
+    const LogSchema = require('./logs/schema/logs.js');
+    const dblogs = await LogSchema.findOne({ token: token, dbname: dbname });
+
+    if (dblogs) {
+        const response = {
+            token: dblogs.token,
+            dbname: dblogs.dbname,
+            logs: dblogs.logs
+        };
+        return res.send(response);
+    } else {
+        return res.status(200).send({
+            error: 'Logs not found'
+        });
+    }
+});
 
 
 
@@ -94,8 +155,6 @@ app.post('/api/:token/databases/getdbnames', (req, res) => {
         });
     }
 
-    console.log(data);
-
 
     if (filenames) {
         return res.send(filenames);
@@ -142,6 +201,8 @@ app.post('/api/:token/:dbname/getschema', (req, res) => {
 app.post('/api/:token/:dbname/findone', (req, res) => {
   const { token, dbname } = req.params;
   const { Key, Value } = req.body;
+
+  CreateLog(token, dbname, `Read`);
   
   const dir = `./Storage/${token}/${dbname}`;
   const filename = `${dir}/${dbname}.json`;
@@ -171,6 +232,8 @@ app.post('/api/:token/:dbname/update', (req, res) => {
     const { token, dbname } = req.params;
     const dir = `./Storage/${token}/${dbname}`;
     const filename = `${dir}/${dbname}.json`;
+
+    CreateLog(token, dbname, `Update`);
   
     if (!fs.existsSync(filename)) {
       return res.status(404).send({ error: 'Database not found' });
