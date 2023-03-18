@@ -12,6 +12,23 @@ const data = [
         name: 'John',
         age: 30,
         PastNames: ['John', 'Johnny', 'Johnathan'],
+        Payments: [
+        {
+            id: '1',
+            amount: 100,
+            date: '2020-01-01',
+        },
+        {
+            id: '2',
+            amount: 200,
+            date: '2020-01-02',
+        },
+        {
+            id: '3',
+            amount: 300,
+            date: '2020-01-03',
+        },
+        ]
     },
     {
         id: '2',
@@ -29,6 +46,7 @@ const schema = {
     name: { type: String, default: null },
     age: { type: Number, default: null },
     PastNames: { type: Array, default: [] },
+    Payments: { type: Array, default: [] },
 };
 
 ////////////////////////////////////////////////////////////////

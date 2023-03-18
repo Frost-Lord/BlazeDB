@@ -43,6 +43,7 @@ const Manage = () => {
             name: { type: String, default: null },
             age: { type: Number, default: null },
             PastNames: { type: Array, default: [] },
+            Payments: { type: Array, default: [] },
           };
 
           setSchemaData(schema);

@@ -228,7 +228,7 @@ app.post('/api/:token/:dbname/findone', (req, res) => {
   });
 });
 
-app.post('/api/:token/:dbname/update', (req, res) => {
+app.post('/api/:token/:dbname/update', async(req, res) => {
     const { token, dbname } = req.params;
     const dir = `./Storage/${token}/${dbname}`;
     const filename = `${dir}/${dbname}.json`;
@@ -239,11 +239,9 @@ app.post('/api/:token/:dbname/update', (req, res) => {
       return res.status(404).send({ error: 'Database not found' });
     }
   
-    const { Key, Value, data } = req.body;
+    const { Key, Value, data } = await req.body;
     const db = JSON.parse(fs.readFileSync(filename));
     const matches = db.filter((item) => item[Key] === Value);
-
-    console.log("Key: " + Key, "Value: " + Value, "Matches: " + matches);
   
     matches.forEach((item) => {
       Object.entries(data).forEach(([key, value]) => {
