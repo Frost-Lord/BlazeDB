@@ -1,4 +1,3 @@
-const axios = require('axios');
 const BlazeDB = require('./npm')
 
 const db = new BlazeDB('435k2h7637c63hg76', 'maindb');
@@ -66,9 +65,8 @@ async function update() {
 
 async function FindOne() {
     const returndata = await db.findOne('id', '1');
-    console.log(returndata.data);
-}
-
+    console.log(returndata ? 'Data Found Successfully! \n' + JSON.stringify(returndata.data) : 'Data Not Found!');
+}  
 
 ////////////////////////////////////////////////////////////////
 // Test the functions above

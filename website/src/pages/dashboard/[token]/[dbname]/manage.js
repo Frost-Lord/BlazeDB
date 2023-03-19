@@ -35,19 +35,11 @@ const Manage = () => {
       if (token && dbname) {
         try {
           const RawData = await axios.post(
-            `http://localhost:4000/api/${token}/${dbname}/getschema`
+            `http://localhost:4000/api/${token}/${dbname}/getdata`
           );
 
-          const schema = {
-            id: { type: String, default: null },
-            name: { type: String, default: null },
-            age: { type: Number, default: null },
-            PastNames: { type: Array, default: [] },
-            Payments: { type: Array, default: [] },
-          };
-
-          setSchemaData(schema);
-          setRootData(RawData.data);
+          setSchemaData(RawData.data.Schema);
+          setRootData(RawData.data.Data);
           toast.success("Schema loaded", toastOptions);
         } catch (error) {
           console.log(error);
@@ -147,7 +139,7 @@ const Manage = () => {
                       {Object.keys(schemaData).map((key) => {
                         const value = Array.isArray(item[key])
                           ? item[key].join(", ")
-                          : item[key];
+                          : item[key] || key.default || "null";
                         return (
                           <div key={key} className={styles.field}>
                             <strong>{key}: </strong>
