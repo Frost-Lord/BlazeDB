@@ -3,7 +3,7 @@ BlazeDB is a blazing fast NoSQL database built for modern applications. It provi
 
 
 <p align="center">
-    <img src="./img">
+    <img src="/img">
 </p>
 
 <p align="center">
